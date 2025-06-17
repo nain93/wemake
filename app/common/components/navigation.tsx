@@ -1,4 +1,19 @@
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
+import { BarChartIcon, LogOutIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/common/components/ui/dropdown-menu";
+import {
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -7,6 +22,7 @@ import {
   NavigationMenuTrigger,
 } from "~/common/components/ui/navigation-menu";
 
+import { Button } from "~/common/components/ui/button";
 import { Link } from "react-router";
 import { Separator } from "~/common/components/ui/separator";
 
@@ -127,14 +143,14 @@ const menus = [
   },
 ];
 
-export default function Navigation() {
+export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
   return (
     <nav
       className="flex px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50
     bg-background/50"
     >
       <div className="flex items-center ">
-        <Link to="/" className="font-bold tracking-tighter text-lg">
+        <Link to="/" className="font-bold tracking-tighter text-2xl">
           wemake
         </Link>
         <Separator orientation="vertical" className="h-6 mx-4" />
@@ -144,22 +160,71 @@ export default function Navigation() {
               <NavigationMenuItem key={menu.name}>
                 <NavigationMenuTrigger>{menu.name}</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  {menu.items?.map((item) => (
-                    <NavigationMenuItem key={item.name}>
-                      {/* <NavigationMenuLink>
-                        <a href={item.to}>
-                          <div>{item.name}</div>
-                        </a>
-                      </NavigationMenuLink> */}
-                      <Link to={item.to}>{item.name}</Link>
-                    </NavigationMenuItem>
-                  ))}
+                  <ul className="grid w-[500px] font-light gap-3 p-4 grid-cols-2">
+                    {menu.items?.map((item) => (
+                      <NavigationMenuItem key={item.name}>
+                        <NavigationMenuLink asChild>
+                          <Link to={item.to}>{item.name}</Link>
+                        </NavigationMenuLink>
+                      </NavigationMenuItem>
+                    ))}
+                  </ul>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
         </NavigationMenu>
       </div>
+      {!isLoggedIn ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage src="https://avatars.githubusercontent.com/u/73378472?v=4" />
+              <AvatarFallback>N</AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link to="/analytics">
+                  <BarChartIcon className="w-4 h-4" />
+                  Dashboard
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/profile">
+                  <UserIcon className="w-4 h-4" />
+                  Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/settings">
+                  <SettingsIcon className="w-4 h-4" />
+                  Settings
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/auth/logout">
+                  <LogOutIcon className="w-4 h-4" />
+                  Logout
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className="flex items-center gap-4">
+          <Button asChild>
+            <Link to="/auth/login">login</Link>
+          </Button>
+          <Button asChild>
+            <Link to="/auth/register">register</Link>
+          </Button>
+        </div>
+      )}
     </nav>
   );
 }
