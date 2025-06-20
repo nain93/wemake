@@ -149,7 +149,7 @@ export default function Navigation({ isLoggedIn }: { isLoggedIn: boolean }) {
       className="flex px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50
     bg-background/50"
     >
-      <div className="flex items-center ">
+      <div className="flex items-center">
         <Link to="/" className="font-bold tracking-tighter text-2xl">
           wemake
         </Link>
