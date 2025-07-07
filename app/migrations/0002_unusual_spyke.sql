@@ -1,0 +1,2 @@
+ALTER TABLE "jobs" ADD COLUMN "user_id" bigint;--> statement-breakpoint
+ALTER TABLE "jobs" ADD CONSTRAINT "jobs_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE no action ON UPDATE no action;
